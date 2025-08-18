@@ -70,8 +70,8 @@ penguins_data <- janitor::clean_names(penguins_data) # Various methods to establ
 colnames(penguins_data) # View the cleaned column names
 
 penguins_data <- rename(penguins_data,
-                   "delta_15n"="delta_15_n_o_oo",  # use rename from the dplyr package
-                   "delta_13c"="delta_13_c_o_oo")
+                        "delta_15n"="delta_15_n_o_oo",  # use rename from the dplyr package
+                        "delta_13c"="delta_13_c_o_oo")
 
 # use mutate and case_when for a statement that conditionally changes the names of the values in a variable
 penguins_data <- penguins_data %>% 
@@ -172,12 +172,38 @@ penguins_data <- penguins_data %>%
 
 ### Exercise ###
 # 1) Using the data set from the course repo "surveys_complete_77_89.csv" in the data folder, select all the variables in the data set except record_id and species_id. How many observations and variables are in the new data set?
+surveys <- read_csv(here("data/surveys_complete_77_89.csv"))
 
+surveys_1 <- surveys %>%
+  select(-record_id, -species_id)
+str(surveys_1)
+
+# 16,878 observations and 11 variables without record_id and species_id
 
 # 2) Using the pipes and dplyr functions, subset the data to include animals collected before 1995 and retain the columns year, sex, and weight. Then what was the average weight (kg) by sex?
 
+surveys_2 <- surveys %>%
+  filter(year < 1995) %>%
+  select(year, sex, weight) %>%
+  group_by(sex) %>%
+  summarise(mean_weight = mean(weight, na.rm = TRUE),
+            n = n())
+
+# Female: 53.1, 53.2 (kg)
 
 # 3) Then create a new data frame from the survey data that only contains the species_id column and a new column called hind_foot_cm created from the hindfoot_length values (currently in mm). This new data frame should include entries that are less than 3 cm and no missing values. Then calculate the mean hind_foot_cm for each species_id and arrange the data frame in ascending order. What were the species with the smallest and largest mean hind_foot_cm?
+
+surveys_3 <- surveys %>%
+  mutate(hind_foot_cm = hindfoot_length/10) %>%
+  select(species_id, hind_foot_cm) %>%
+  filter(hind_foot_cm < 3, !is.na(hind_foot_cm)) %>%
+  group_by(species_id) %>%
+  summarise(mean_hind_foot_cm = mean(hind_foot_cm, na.rm = TRUE),
+            n = n()) %>%
+  arrange(mean_hind_foot_cm)
+
+# Smallest: BA, 1.95 (cm)
+# Largest: DO, 2.85 (cm)
 
 
 # Introduction to ggplot2 and Data visualization
@@ -276,14 +302,14 @@ ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g)) +
 # The last thing to note is that you can save the graph to a file using the ggsave() function. This function saves the last plot created in the current R session to a file. Using there here() function to direct the ggsave() function to the output folder in the project directory helps keep the project organized.
 
 Bill_Length <- ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g)) +
-               geom_point(aes(color = species, shape = species)) +
-               geom_smooth(method = "lm") +
-               labs(title = "Body mass and bill length",
-                 subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
-                 x = "Bill length (mm)", y = "Body mass (g)",
-                 color = "Species", shape = "Species") +
-               theme_classic() +
-               scale_color_colorblind()
+  geom_point(aes(color = species, shape = species)) +
+  geom_smooth(method = "lm") +
+  labs(title = "Body mass and bill length",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Bill length (mm)", y = "Body mass (g)",
+       color = "Species", shape = "Species") +
+  theme_classic() +
+  scale_color_colorblind()
 
 ggsave(here("output","Bill_Length.tiff"), plot = Bill_Length, width = 8, height = 6, dpi = 300)
 # You can specify the file type (e.g., .tiff, .png, .pdf, etc.) and the dimensions of the plot in inches. The dpi argument specifies the resolution of the image in dots per inch.
@@ -297,11 +323,38 @@ ggsave(here("output","Bill_Length.svg"), plot = Bill_Length, width = 8, height =
 # Select another variable from the penguins dataset to plot against body mass.
 # Consider the type of variable you are using (categorical, continuous, etc.) and how you want to represent the data (points, lines, bars, etc.).
 
-
+penguins %>%
+  filter(!is.na(island)) %>% # Remove missing values
+  ggplot(aes(x = island, fill = species)) +
+  geom_bar() +
+  labs(title = "Number of Penguins by Island and Species",
+       x = "Island", y = "Count", fill = "Species") +
+  theme_classic()+
+  scale_fill_colorblind()
 
 # Now try plotting two continuous variables against each other and adding a third continuous variable as color.
 
-
+penguins %>%
+  filter(!is.na(body_mass_g)) %>% # Remove missing values
+  ggplot() +
+  geom_point(aes(x = flipper_length_mm, y = body_mass_g/1000, color = culmen_depth_mm, shape = species)) +
+  geom_smooth(aes(x = flipper_length_mm, y = body_mass_g/1000), se = T) +
+  labs(title = "Body Mass, Bill Depth, and Flipper Length",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Fipper Length (mm)", y = "Body Mass (Kg)", color = "Bill Depth (mm)", shape = "Species") +
+  theme_classic()
 
 # You can also facet the graph by a categorical variable to create multiple panels.
+
+penguins %>%
+  filter(!is.na(body_mass_g)) %>% # Remove missing values
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g/1000)) +
+  geom_point(aes(color = species, shape = species)) +
+  facet_wrap(~island) + # Multiple panels by island
+  labs(title = "Body Mass and Flipper Length by Island and Species",
+       subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo Penguins",
+       x = "Fipper Length (mm)", y = "Body Mass (Kg)", color = "Species", shape = "Species") +
+  theme_classic()
+
+
 
