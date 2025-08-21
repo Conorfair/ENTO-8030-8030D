@@ -81,7 +81,7 @@ penguins_data <- penguins_data %>%
 
 # Use the select function to select specific columns from the data
 penguins_data <- penguins_data %>%
-  select(species, sex, island, culmen_length_mm, culmen_depth_mm, flipper_length_mm, body_mass_g)
+  select(species, sex, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g)
 
 #penguins <- penguins %>% 
 #   select(-study_name, -sample_number, -region, -stage, -individual_id, -clutch_completion, -date_egg, -delta_15n, -delta_13c, -comments) # gives the same result
@@ -214,23 +214,23 @@ ggplot(data = penguins)
 
 # This creates a blank graph with the axes defined but no data points.
 
-ggplot(data = penguins, mapping = aes(x = culmen_length_mm, y = body_mass_g))
+ggplot(data = penguins, mapping = aes(x = bill_length_mm, y = body_mass_g))
 
 # This defines the aesthetics of the axes for the graph and draws the minimum and maximum ranges and their labels.
 
-ggplot(data = penguins, mapping = aes(x = culmen_length_mm, y = body_mass_g)) +
+ggplot(data = penguins, mapping = aes(x = bill_length_mm, y = body_mass_g)) +
   geom_point()
 
 # "geom_point()" adds a layer of points to the graph to represent the data. The points are plotted based on the x and y values defined in the aesthetics. There are many other geometries you can use to represent different types of data, such as lines (geom_line()), bars (geom_bar()), histograms (geom_histogram()), etc. You can find a full list of geometries in the ggplot2 documentation.
 
 # We also see a warning message in the console - "Removed 2 rows containing missing values (geom_point())." This means that there are two rows in the dataset that have missing values for either the flipper_length_mm or body_mass_g variables. ggplot2 automatically removes these rows from the graph. You can check for missing values in the dataset using the is.na() function or the complete.cases() function.
 
-is.na(penguins$culmen_length_mm)
+is.na(penguins$bill_length_mm)
 is.na(penguins$body_mass_g)
 
 # You can add additional aesthetic elements to the figure by adding more arguments to the aes() function. For example, you can add color to the points based on the species of the penguins.
 
-ggplot(data = penguins, mapping = aes(x = culmen_length_mm, y = body_mass_g, color = species)) +
+ggplot(data = penguins, mapping = aes(x = bill_length_mm, y = body_mass_g, color = species)) +
   geom_point()
 
 # This adds a color aesthetic to the points based on the species variable.
@@ -238,14 +238,14 @@ ggplot(data = penguins, mapping = aes(x = culmen_length_mm, y = body_mass_g, col
 
 # We can add a smooth curve showing the relationship between body mass and flipper length.
 
-ggplot(data = penguins, mapping = aes(x = culmen_length_mm, y = body_mass_g, color = species)) +
+ggplot(data = penguins, mapping = aes(x = bill_length_mm, y = body_mass_g, color = species)) +
   geom_point() +
   geom_smooth(method = "lm")
 
 # Here we have a line for each species, but what if we only wanted a single line for all the penguins?
 # When aesthetics are defined in the ggplot() function, they apply to all layers of the graph. If you want to change the aesthetics for a specific layer, you can define them in that layer's function.
 
-ggplot(data = penguins, mapping = aes(x = culmen_length_mm, y = body_mass_g)) +
+ggplot(data = penguins, mapping = aes(x = bill_length_mm, y = body_mass_g)) +
   geom_point(aes(color = species)) +
   geom_smooth(method = "lm", color = "black")
 
@@ -253,13 +253,13 @@ ggplot(data = penguins, mapping = aes(x = culmen_length_mm, y = body_mass_g)) +
 
 # You can also change the shape of the points based on the species variable.
 
-ggplot(data = penguins, mapping = aes(x = culmen_length_mm, y = body_mass_g)) +
+ggplot(data = penguins, mapping = aes(x = bill_length_mm, y = body_mass_g)) +
   geom_point(aes(color = species, shape = species)) +
   geom_smooth(method = "lm", color = "black")
 
 # Now we will change the labels of the axes and the title of the graph.
 
-ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g)) +
+ggplot(data = penguins, aes(x = bill_length_mm, y = body_mass_g)) +
   geom_point(aes(color = species, shape = species)) +
   geom_smooth(method = "lm") +
   labs(title = "Body mass and bill length",
@@ -275,7 +275,7 @@ ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g)) +
 
 # The last thing to note is that you can save the graph to a file using the ggsave() function. This function saves the last plot created in the current R session to a file. Using there here() function to direct the ggsave() function to the output folder in the project directory helps keep the project organized.
 
-Bill_Length <- ggplot(data = penguins, aes(x = culmen_length_mm, y = body_mass_g)) +
+Bill_Length <- ggplot(data = penguins, aes(x = bill_length_mm, y = body_mass_g)) +
                geom_point(aes(color = species, shape = species)) +
                geom_smooth(method = "lm") +
                labs(title = "Body mass and bill length",
