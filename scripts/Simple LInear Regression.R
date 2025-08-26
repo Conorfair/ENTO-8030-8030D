@@ -1,6 +1,6 @@
 # Simple Linear Regression - lm()
 
-# Linear regression is a means to test a relationship between one or more independent variables and a dependent variable that is continuous. Depending on the conditions of the independent variable(s), you may be fitting a model that is colloquially reffered to as a "simple" linear regression, a "multiple" linear regression, t-test, ANOVA, or ANCOVA. As to which type of model you are fitting, it is determined by the characteristic and number of the independent variables included.
+# Linear regression is a means to test a relationship between one or more independent variables and a dependent variable that is continuous. Depending on the conditions of the independent variable(s), you may be fitting a model that is colloquially referred to as a "simple" linear regression, a "multiple" linear regression, t-test, ANOVA, or ANCOVA. As to which type of model you are fitting, it is determined by the characteristic and number of the independent variables included.
 
 # We will start with the simplest case, a simple linear regression, which is a model with one continuous dependent variable and one continuous independent variable.
 
@@ -353,9 +353,9 @@ emtrends_ancova <- emtrends(model_ancova_interaction, ~ season, var = "density")
   as_tibble()
 emtrends_ancova
 
-# Slopes are not significantly different, so we can interpret the main effects of season using the additive model
+# Slopes are not significantly different
 
-emmeans_ancova <- emmeans(model_ancova_additive, ~ season) %>%
+emmeans_ancova <- emmeans(model_ancova_interaction, ~ season) %>%
   cld(Letters = letters) %>%
   as_tibble()
 emmeans_ancova
