@@ -153,10 +153,10 @@ combined_penguins_interaction_plot <- (Bill_Length_Species_Plot + Bill_Length_Se
                   caption = "Data: Palmer Station LTER")
 
 
-# Our understanding of the possible realtionship begins to take shape
+# Our understanding of the possible relationship begins to take shape
 # There is the interaction between the independent continuous variables and species and island - a three-way interaction is possible to estimate but notoriously complex to interpret.
 
-# Let's consider an interaction between two continous variables
+# Let's consider an interaction between two continuous variables
 Bill_Length_Depth_Interaction_Plot <- ggplot(penguins, aes(x = culmen_length_mm, y = body_mass_g, color = culmen_depth_mm)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
@@ -189,7 +189,7 @@ combined_penguins_continuous_interaction_plot <- (Bill_Length_Depth_Interaction_
 
 # Some possible interactions here as well - difficult to interpret without strong theoretical backing to guide our understanding of the data
 
-# You can see how this can get complex quickyl and how the visualizations can help us understand the possible relationships
+# You can see how this can get complex quickly and how the visualizations can help us understand the possible relationships
 
 # Let's fit a multiple linear regression model
 # Start with a full model including all independent variables
@@ -281,7 +281,7 @@ emtrends(mod_3, ~ species, var = "culmen_length_mm") %>%
 
 # Now that we have used the dredge function to determine which terms should be included in the model - we should not drop a non-significant term from the model if it is part of an interaction. The model with the lowest AIC is now the "best approximating model" from a candidate set of models.
 
-# This is mixing approaches of AIC and null hypothesis significance testing (NHST) - this is not ideal but is unfortunatrly commonly done in practice. You should avoid doing this. Stick to one approach in model selection and interpretation. Sometimes you may have a clear theory driven approach to model selection based on NHST, and other times you may be innudated with possible interactions and covariates that may require AIC model selection approaches and the dredge function. 
+# This is mixing approaches of AIC and null hypothesis significance testing (NHST) - this is not ideal but is unfortunately commonly done in practice. You should avoid doing this. Stick to one approach in model selection and interpretation. Sometimes you may have a clear theory driven approach to model selection based on NHST, and other times you may be inundated with possible interactions and covariates that may require AIC model selection approaches and the dredge function. 
 
 # Let's visualize the model fit for the best approximating model
 
