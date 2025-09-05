@@ -248,7 +248,7 @@ car::Anova(model_two_way_interaction, type = "II") # Type II ANOVA table - Type 
 car::Anova(model_two_way_interaction, type = "III") # Type III ANOVA table - Type III is used when there are interactions in the model
 
 # If the interaction was a crucial part of your hypothesis and you wanted to show that it was not significant - you should report type III
-# If the interaction was not a crucial part of your hypothesis and you wanted to show the main effects of each independent variable - you should report type II becuase the interaction is not significant
+# If the interaction was not a crucial part of your hypothesis and you wanted to show the main effects of each independent variable - you should report type II because the interaction is not significant
 # If the interaction is ever significant - you should report type III
 
 # Test model assumptions
